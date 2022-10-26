@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -9,6 +9,20 @@ function Home() {
     const initialValues = { Uname: "", address: "", city: "", state: "", email: "", phone: "", company: "", image: "", incubation: "" }
     const [values, setValues] = useState(initialValues)
 
+    useEffect(() => {
+        userAuthenticeted()
+    }, [])
+
+    const userAuthenticeted = () => {
+        axios.get("http://localhost:5000/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
+            if (response.data.auth) navigate('/')
+            else navigate('/login')
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target

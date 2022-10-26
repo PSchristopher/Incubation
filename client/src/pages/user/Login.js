@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from 'react-icons/fa'
 import { MdLockOutline } from 'react-icons/md'
 import { useNavigate, Link } from 'react-router-dom'
@@ -12,6 +12,21 @@ function Login() {
         password: true,
         msg: ''
     })
+
+    useEffect(() => {
+        userAuthenticeted()
+    }, [])
+
+    const userAuthenticeted = () => {
+        axios.get("http://localhost:5000/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
+            if (response.data.auth) navigate('/')
+            else navigate('/login')
+        });
+    };
 
     const handleChange = (e) => {
 
@@ -48,7 +63,9 @@ function Login() {
                         msg: response.data.message
                     })
                 } else {
-
+                    console.log('kkkk');
+                    console.log(response.data);
+                    localStorage.setItem("token", response.data.token)
                     navigate('/')
                 }
             }).catch(error => console.log(error))

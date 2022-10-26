@@ -17,6 +17,21 @@ function Signup() {
         msg: ''
     })
 
+    useEffect(() => {
+        userAuthenticeted()
+    }, [])
+
+    const userAuthenticeted = () => {
+        axios.get("http://localhost:5000/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
+            if (response.data.auth) navigate('/')
+            else navigate('/signup')
+        });
+    };
+
 
     const handleChange = (e) => {
 

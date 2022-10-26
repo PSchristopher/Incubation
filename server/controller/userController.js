@@ -2,6 +2,7 @@ const app = require("../app")
 const User = require("../models/users/register")
 const bcrypt = require('bcrypt')
 const Application = require("../models/users/application")
+const jwt = require('jsonwebtoken');
 
 
 const postSignUp = async (req, res) => {
@@ -41,7 +42,9 @@ const postSignIn = async (req, res) => {
         if (user) {
             const pass = await bcrypt.compare(password, user.password)
             if (pass) {
-                res.json({ msg: false, message: "login success", user })
+                const token = jwt.sign({user}, "jwtSecret", {expiresIn: 300})
+
+                res.status(200).json({ msg: false, token: token, auth: true })
             } else {
                 res.json({ msg: true, message: "Invalid Password" })
             }
@@ -52,6 +55,29 @@ const postSignIn = async (req, res) => {
         console.log(error.message)
     }
 }
+
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+    if (!token) {
+        res.json({message: "We need a token, please give it to us next time", auth: false});
+    } else {
+        jwt.verify(token, "jwtSecret", (err, decoded) => {
+            if (err) {
+                console.log(err);
+                res.json({ auth: false, message: "you are failed to authenticate"});
+            } else {
+                next();
+            }
+        });
+    }
+};
+
+
+const jwtVari =  (req, res) => {
+    res.json({ auth: true, message: "You are authenticated Congrats"});
+}
+
+
 /* ----------------------------- postapplication ---------------------------- */
 const postApp = async (req, res) => {
     try {
@@ -78,4 +104,4 @@ const postApp = async (req, res) => {
     }
 }
 
-module.exports = { postSignUp, postSignIn, postApp }
+module.exports = { postSignUp, postSignIn, postApp, jwtVari, verifyJWT }
