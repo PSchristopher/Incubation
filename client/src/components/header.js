@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function header() {
     return (
@@ -9,9 +10,9 @@ function header() {
                 </div>
               
                 <div >
-                    <button className='text-dark-purple bg-white text-md h-6 w-24 rounded-lg '>
+                    <Link to={'/adminlogin'} className='text-dark-purple bg-white text-md h-6 w-24 rounded-lg '>
                         LOGOUT
-                    </button>
+                    </Link>
                 </div>
             </nav>
         </div>

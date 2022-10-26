@@ -1,11 +1,13 @@
-const { response } = require('express')
+// const { response } = require('express')
+const {postSignUp,postSignIn,postApp} =require("../controller/userController")
 const express = require('express')
 const router = express.Router()
-const signUpForm = require('../models/users/register')
+// const signUpForm = require('../models/users/register')
 
 
-router.post('/signup',(req,res)=>{
-    response.send('send')
-})
 
-module.exports = router
+router.post('/signup',postSignUp)
+router.post('/login',postSignIn)
+router.post('/',postApp)
+
+module.exports = router;

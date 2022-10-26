@@ -3,7 +3,7 @@ import SideNav from '../../components/Navbar'
 import Head from '../../components/header'
 import { Outlet } from 'react-router-dom'
 
-function admindashboard() {
+function Admindashboard() {
     return (
         <div className='flex'>
 
@@ -18,4 +18,4 @@ function admindashboard() {
     )
 }
 
-export default admindashboard
+export default Admindashboard

@@ -1,7 +1,62 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from 'react-icons/fa'
 import { MdLockOutline } from 'react-icons/md'
+import { useNavigate, Link } from 'react-router-dom'
 function Login() {
+    const navigate = useNavigate()
+    const initialValues = { email: '', password: '' }
+    const [values, setvalues] = useState(initialValues)
+    const [logErr, setlogErr] = useState({
+        email: true,
+        password: true,
+        msg: ''
+    })
+
+    const handleChange = (e) => {
+
+        const { name, value } = e.target
+        setvalues({ ...values, [name]: value })
+
+        console.log("values")
+        console.log(values)
+
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (values.email == '') {
+            setlogErr({
+                email: false,
+                password: true,
+                msg: 'Enter email id'
+            })
+        } else if (values.password == '') {
+            setlogErr({
+                email: true,
+                password: false,
+                msg: 'Enter ur Password'
+            })
+        } else {
+            setvalues(values)
+            axios.post('http://localhost:5000/login', { ...values }).then((response) => {
+                console.log("ameen");
+                console.log(response.data)
+                if (response.data.passmsg) {
+                    setlogErr({
+                        email: false,
+                        password: false,
+                        msg: response.data.message
+                    })
+                } else {
+
+                    navigate('/')
+                }
+            }).catch(error => console.log(error))
+
+        }
+    }
+
+
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100'>
             <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center'>
@@ -18,30 +73,34 @@ function Login() {
                                     <FaFacebookF className='text-sm' />
                                 </a>
                                 <a href='' className='border-2 border-gray-200 rounded-full p-3 mx-1'>
-                                    <FaLinkedinIn className='text-sm' />
+                                      <FaLinkedinIn className='text-sm' />
                                 </a>
                                 <a href='' className='border-2 border-gray-200 rounded-full p-3 mx-1'>
                                     <FaGoogle className='text-sm' />
                                 </a>
                             </div>
                             <p className='text-gray-400 my-3'>Or use your email Account</p>
-                            <form>
+                            <form >
                                 <div className='flex flex-col items-center'>
                                     <div className='bg-gray-100 w-64 p-2 flex items-center mb-3'><FaRegEnvelope className='text-gray-400 m-3' />
-                                        <input type="email" name='email' placeholder='Email' className=' bg-gray-100 flex-1' />
+                                        <input type="email" name='email' placeholder='Email' className=' bg-gray-100 flex-1' value={setvalues.email} onChange={handleChange} />
+
                                     </div>
+                                    <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logErr.email ? '' : logErr.msg}</p>
                                 </div>
                                 <div className='flex flex-col items-center'>
                                     <div className='bg-gray-100 w-64 p-2 flex items-center mb-3'><MdLockOutline className='text-gray-400 m-3' />
-                                        <input type="password" name='password' placeholder='Password' className=' bg-gray-100 flex-1' />
+                                        <input type="password" name='password' placeholder='Password' className=' bg-gray-100 flex-1' value={setvalues.password} onChange={handleChange} />
                                     </div>
+                                    <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logErr.password ? '' : logErr.msg}</p>
+
                                     <div className='flex justify-between w-64 mb-5'>
                                         <label className='flex items-center text-xs'>
                                             <input type='checkbox' name='remember' className='mr-1' />Remember Me
                                         </label>
                                         <a href='#' className='text-xs'>Forgot Password</a>
                                     </div>
-                                    <a href='' className='border-2 border-sky-900 rounded-full px-12 py-2 inline-block font-semibold hover:bg-sky-900 hover:text-white'>Sign In</a>
+                                    <button className='border-2 border-sky-900 rounded-full px-12 py-2 inline-block font-semibold hover:bg-sky-900 hover:text-white' onClick={handleSubmit}>Sign In</button>
                                 </div>
                             </form>
                         </div>
@@ -50,7 +109,7 @@ function Login() {
                         <h2 className='text-3xl  font-bold mb-2'>Hello Friends !</h2>
                         <div className='border-2 w-10 border-white inline-block mb-1'></div>
                         <p className='mb-10'>Fill up personal information and start journey with us.</p>
-                        <a href='/signup' className='border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-sky-900'>Sign Up</a>
+                        <Link to='/signup' className='border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-sky-900'>Sign Up</Link>
                     </div>
                 </div>
             </main>

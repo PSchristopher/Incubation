@@ -9,7 +9,7 @@ const signUpForm = new mongoose.Schema({
         type: String,
         required: true
     },
-    mobile: {
+    phone: {
         type: String,
         required: true
     },
@@ -18,5 +18,6 @@ const signUpForm = new mongoose.Schema({
         required: true
     }
 })
+const usermodel = mongoose.model('user',signUpForm)
 
-module.exports = mongoose.model('users',signUpForm)
+module.exports =usermodel
