@@ -8,7 +8,7 @@ const applicationForm = new mongoose.Schema({
     email: String,
     phone: String,
     company: String,
-    sttus: String,
+    status: String,
     
     incubation: String
 })

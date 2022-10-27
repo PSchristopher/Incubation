@@ -5,7 +5,7 @@ import Signup from './pages/user/Signup';
 import Home from './pages/user/Home';
 import AdminLogin from './pages/admin/Adminlogin'
 import Admin from './pages/admin/Admindashboard'
-import Applicationlist from './pages/admin/adminPages/Applicationlist';
+import Applicationlist from './pages/admin/Applicationlist';
 import Success from './pages/user/Success';
 
 function App() {

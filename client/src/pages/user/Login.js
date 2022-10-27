@@ -64,7 +64,7 @@ function Login() {
                     })
                 } else {
                     console.log('kkkk');
-                    console.log(response.data);
+                    console.log(response.data.token);
                     localStorage.setItem("token", response.data.token)
                     navigate('/')
                 }
@@ -85,7 +85,7 @@ function Login() {
                         <div className='py-10'>
                             <h2 className='text-3xl font-bold text-sky-900 mb-2'>Sign In To Account</h2>
                             <div className='border-2 w-20 border-sky-900 inline-block'></div>
-                            <div className='flex justify-center my-2'>
+                            {/* <div className='flex justify-center my-2'>
                                 <a href='' className='border-2 border-gray-200 rounded-full p-3 mx-1'>
                                     <FaFacebookF className='text-sm' />
                                 </a>
@@ -95,7 +95,7 @@ function Login() {
                                 <a href='' className='border-2 border-gray-200 rounded-full p-3 mx-1'>
                                     <FaGoogle className='text-sm' />
                                 </a>
-                            </div>
+                            </div> */}
                             <p className='text-gray-400 my-3'>Or use your email Account</p>
                             <form >
                                 <div className='flex flex-col items-center'>
@@ -111,12 +111,12 @@ function Login() {
                                     </div>
                                     <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logErr.password ? '' : logErr.msg}</p>
 
-                                    <div className='flex justify-between w-64 mb-5'>
+                                    {/* <div className='flex justify-between w-64 mb-5'>
                                         <label className='flex items-center text-xs'>
                                             <input type='checkbox' name='remember' className='mr-1' />Remember Me
                                         </label>
                                         <a href='#' className='text-xs'>Forgot Password</a>
-                                    </div>
+                                    </div> */}
                                     <button className='border-2 border-sky-900 rounded-full px-12 py-2 inline-block font-semibold hover:bg-sky-900 hover:text-white' onClick={handleSubmit}>Sign In</button>
                                 </div>
                             </form>

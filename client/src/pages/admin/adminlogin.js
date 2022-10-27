@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaFacebookF, FaLinkedinIn, FaGoogle, FaRegEnvelope } from 'react-icons/fa'
 import { MdLockOutline } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
@@ -13,6 +13,23 @@ function Adminlogin() {
         password: true,
         msg: ''
     })
+    useEffect(() => {
+        userAuthenticeted()
+    }, [])
+
+    const userAuthenticeted = () => {
+        axios.get("http://localhost:5000/admin/isAdminAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("adminToken"),
+            },
+        }).then((response) => {
+            console.log(response.data.auth)
+            if (response.data.auth) {
+                navigate('/admin/applicationlist')}
+          else {  navigate('/adminlogin')}
+           
+        });
+    };
     const handleChange = (e) => {
 
         const { name, value } = e.target
@@ -54,14 +71,15 @@ function Adminlogin() {
                         msg: response.data.message
                     })
                 } else {
-                    navigate("/admin/applicationlist")
+                    localStorage.setItem("adminToken", response.data.adminToken)
+                    navigate("/admin/applicationlist")  
                 }
             }).catch(error => console.log(error))
         }
     }
 
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100'>
+        <div className='flex flex-col items-center justify-center min-h-screen py-2 bg-sky-900'>
             <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center'>
                 <div className='bg-white rounded-2xl shadow-2xl flex flex-row  max-w-4xl'>
                     <div className='flex-col justify-center  p-5'>
@@ -95,12 +113,12 @@ function Adminlogin() {
                                         <input type="password" name='password' placeholder='Password' className=' bg-gray-100 flex-1' value={setValues.password} onChange={handleChange} />
                                     </div>
                                     <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logError.password ? '' : logError.msg}</p>
-                                    <div className='flex justify-between w-64 mb-5'>
+                                    {/* <div className='flex justify-between w-64 mb-5'>
                                         <label className='flex items-center text-xs'>
                                             <input type='checkbox' name='remember' className='mr-1' />Remember Me
                                         </label>
                                         <a href='#' className='text-xs'>Forgot Password</a>
-                                    </div>
+                                    </div> */}
                                     <a href='' className='border-2 border-sky-900 rounded-full px-12 py-2 inline-block font-semibold hover:bg-sky-900 hover:text-white' onClick={handleSubmit}>Sign In</a>
                                 </div>
                             </form>

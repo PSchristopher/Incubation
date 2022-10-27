@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import jwtDecode from 'jwt-decode'
 
 
 
@@ -8,6 +9,7 @@ function Home() {
     const navigate = useNavigate()
     const initialValues = { Uname: "", address: "", city: "", state: "", email: "", phone: "", company: "", image: "", incubation: "" }
     const [values, setValues] = useState(initialValues)
+    const [Something, setSomething] = useState('')
 
     useEffect(() => {
         userAuthenticeted()
@@ -19,9 +21,24 @@ function Home() {
                 "x-access-token": localStorage.getItem("token"),
             },
         }).then((response) => {
-            if (response.data.auth) navigate('/')
+            if (response.data.auth){
+                console.log(jwtDecode(localStorage.getItem("token")));
+
+                setSomething(jwtDecode(localStorage.getItem("token")).user)
+
+                console.log(jwtDecode(localStorage.getItem("token")).user);
+               
+               
+                
+                console.log('loooooooooooooooooooo');
+                navigate('/')
+            }
             else navigate('/login')
         });
+    };
+    const logout = () => {
+        localStorage.removeItem('token');
+        navigate("/login");
     };
 
     const handleChange = (e) => {
@@ -48,12 +65,12 @@ function Home() {
     return (
 
         <div>
-            <nav className='flex gap-80  h-16 place-items-center bg-sky-200'>
+            <nav className='flex gap-72  h-16 place-items-center bg-sky-200'>
                 <div className='text-2xl font-bold ml-6'>
                     <h2>REVA NEST</h2>
                 </div>
                 <div className='menu '>
-                    <ul className='flex gap-4 ml-4'>
+                    {/* <ul className='flex gap-4 ml-4'>
                         <li>
                             <a>HOME</a>
                         </li>
@@ -63,13 +80,13 @@ function Home() {
                         <li>
                             <a>SERVICE</a>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
-                <div className='user'>
-                    <h2>WELCOME :  </h2>
+                <div className='user '>
+                    <h2 className=''>Welcome : {Something}   </h2>
                 </div>
                 <div>
-                    <button>
+                    <button onClick={logout}>
                         LOGOUT
                     </button>
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import SideNav from '../../components/Navbar'
-import Head from '../../components/header'
+import Head from '../../components/Header'
 import { Outlet } from 'react-router-dom'
 
 function Admindashboard() {

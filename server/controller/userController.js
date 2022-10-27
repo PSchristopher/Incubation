@@ -42,8 +42,7 @@ const postSignIn = async (req, res) => {
         if (user) {
             const pass = await bcrypt.compare(password, user.password)
             if (pass) {
-                const token = jwt.sign({user}, "jwtSecret", {expiresIn: 300})
-
+                const token = jwt.sign({user: user.name}, "jwtSecret", {expiresIn: 300})
                 res.status(200).json({ msg: false, token: token, auth: true })
             } else {
                 res.json({ msg: true, message: "Invalid Password" })
@@ -52,7 +51,7 @@ const postSignIn = async (req, res) => {
             res.json({ msg: true, message: "Invalid Mail or Ur mail is not registered" })
         }
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message) 
     }
 }
 

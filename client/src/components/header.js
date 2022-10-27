@@ -1,7 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+function Header() {
 
-function header() {
+  const navigate = useNavigate()
+
+    const logout = () => {
+        localStorage.removeItem('adminToken');
+        navigate("/adminlogin");
+    };
     return (
         <div>
             <nav className='flex justify-between pr-5  h-16 place-items-center bg-dark-purple '>
@@ -10,13 +16,13 @@ function header() {
                 </div>
               
                 <div >
-                    <Link to={'/adminlogin'} className='text-dark-purple bg-white text-md h-6 w-24 rounded-lg '>
+                    <button onClick={logout} className='text-dark-purple bg-white text-md h-6 w-24 rounded-lg '>
                         LOGOUT
-                    </Link>
+                    </button>
                 </div>
             </nav>
         </div>
     )
 }
 
-export default header
+export default Header

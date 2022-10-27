@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react'
 import {FaFirstdraft,FaAtlas,FaCubes,FaFileAlt,FaDatabase} from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 
 function Navbar() {
     const [open, setOpen] = useState(true)
     const Menus = [
-        { title: 'Application List', src: <FaAtlas/> },
+        { Applist: 'Application List', src: <FaAtlas/> },
         { title: 'Approved List', src: <FaFirstdraft/> },
         { title: 'Rejected List', src: <FaCubes/> },
         { title: 'Booking Slots', src:  <FaDatabase/>  },
@@ -26,8 +27,11 @@ function Navbar() {
                 <ul className='pt-16'>
                     {Menus.map((menu, index) => (
                         <li key={index} className={`text-gray-300 text-lg flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-5 ${index === 0 && 'bg-lime-white'}`}  >
-                            {menu.src}
-                            <span className={`${!open && 'hidden'} origin-left duration-200`}>{menu.title}</span>
+                            {menu.src}  
+                            <span className={`${!open && 'hidden'} origin-left duration-200`}>{menu.title}
+                            <Link to={'/admin/applicationlist'}>{menu.Applist}</Link>
+                            <Link></Link>
+                            </span>
                         </li>
                     ))}
                 </ul>
