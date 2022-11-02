@@ -9,8 +9,8 @@ const applicationForm = new mongoose.Schema({
     phone: String,
     company: String,
     status: String,
-    
-    incubation: String
+    incubation: String,
+     userId:mongoose.Types.ObjectId
 })
 const applicationmodel = mongoose.model('application', applicationForm)
 

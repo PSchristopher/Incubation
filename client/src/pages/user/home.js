@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwtDecode from 'jwt-decode'
+import ReactJsAlert from "reactjs-alert"
 
 
 
@@ -12,6 +13,11 @@ function Home() {
     const initialValues = { Uname: "", address: "", city: "", state: "", email: "", phone: "", company: "", image: "", incubation: "" }
     const [values, setValues] = useState(initialValues)
     const [Something, setSomething] = useState('')
+    const [id, setId] = useState('')
+
+    const [status, setStatus] = useState(false);
+    const [type, setType] = useState("");
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         userAuthenticeted()
@@ -24,8 +30,9 @@ function Home() {
             },
         }).then((response) => {
             if (response.data.auth) {
-                
+
                 setSomething(jwtDecode(localStorage.getItem("token")).user)
+                setId(jwtDecode(localStorage.getItem("token")).id)
 
                 navigate('/')
             }
@@ -71,9 +78,16 @@ function Home() {
         e.preventDefault()
         setValues(values)
         console.log(values);
-        axios.post('http://localhost:5000/', { ...values }).then((response) => {
+        axios.post('http://localhost:5000/', { ...values, id }).then((response) => {
+            if (response.data.appMsg) {
+                setStatus(true)
+                setType("error")
+                setTitle(response.data.message)
+              
+            } else {
+                navigate('/success')
+            }
         })
-        navigate('/success')
     }
     return (
 
@@ -83,17 +97,7 @@ function Home() {
                     <h2>REVA NEST</h2>
                 </div>
                 <div className='menu '>
-                    {/* <ul className='flex gap-4 ml-4'>
-                        <li>
-                            <a>HOME</a>
-                        </li>
-                        <li>
-                            <a>ABOUT</a>
-                        </li>
-                        <li>
-                            <a>SERVICE</a>
-                        </li>
-                    </ul> */}
+                   
                 </div>
                 <div className='user '>
                     <h2 className=''>Welcome : {Something}   </h2>
@@ -105,6 +109,12 @@ function Home() {
                 </div>
             </nav>
             <form onSubmit={handleSubmit}>
+                {status ? <ReactJsAlert
+                    status={status} // true or false
+                    type={type} // success, warning, error, info
+                    title={title}
+                    Close={() => setStatus(false)} />
+                    : null}
                 <div className='flex place-content-center flex-col items-center '>
                     <h1 className='text-2xl font-bold'>INCUBATION</h1>
                     <div className='w-2/5 pt-8 '>

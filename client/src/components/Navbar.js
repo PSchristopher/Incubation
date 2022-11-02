@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react'
-import {FaFirstdraft,FaAtlas,FaCubes,FaFileAlt,FaDatabase,FaMicrosoft} from 'react-icons/fa'
+import {FaFirstdraft,FaAtlas,FaCubes,FaFileAlt,FaDatabase,FaMicrosoft,FaReact} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 
@@ -22,7 +22,7 @@ function Navbar() {
                 <img src='/assets/control.png' className={`absolute cursor-pointer rounded-full right-0.5 top-9 w-7 border-2 border-dark-purple ${!open && "rotate-180"} `}
                     onClick={() => { setOpen(!open) }} />
                 <div className='flex gap-x-4 items-center'>
-                    <img src='./assets/logo.png' className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"} `} />
+                    <span  className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"} text-white text-[28px] `}><FaReact/></span>
                     <h1 className={`text-white origin-left font-medium text-xl duration-300 ${!open && "scale-0"}`}>Admin</h1>
                 </div>
                 <ul className='pt-16'>
