@@ -1,12 +1,29 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+
 function Header() {
 
   const navigate = useNavigate()
 
     const logout = () => {
-        localStorage.removeItem('adminToken');
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            // showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            // denyButtonText: `Don't save`,
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                Swal.fire('LOGGED OUT!', 'C U AGAIN', 'success')
+                // } else if (result.isDenied) {
+                //   Swal.fire('Changes are not saved', '', 'info')
+            localStorage.removeItem('adminToken');
         navigate("/adminlogin");
+            }
+        })
+       
     };
     return (
         <div>

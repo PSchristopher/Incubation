@@ -56,7 +56,7 @@ function Login() {
             axios.post('http://localhost:5000/login', { ...values }).then((response) => {
                 console.log("ameen");
                 console.log(response.data)
-                if (response.data.passmsg) {
+                if (response.data.msg) {
                     setlogErr({
                         email: false,
                         password: false,
@@ -109,7 +109,7 @@ function Login() {
                                     <div className='bg-gray-100 w-64 p-2 flex items-center mb-3'><MdLockOutline className='text-gray-400 m-3' />
                                         <input type="password" name='password' placeholder='Password' className=' bg-gray-100 flex-1' value={setvalues.password} onChange={handleChange} />
                                     </div>
-                                    <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logErr.password ? '' : logErr.msg}</p>
+                                    {/* <p className='font-normal text-xs m-0  mb-3 text-left text-red-600'>{logErr.password ? '' : logErr.msg}</p> */}
 
                                     {/* <div className='flex justify-between w-64 mb-5'>
                                         <label className='flex items-center text-xs'>

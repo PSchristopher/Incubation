@@ -36,12 +36,15 @@ const postSignUp = async (req, res) => {
 /* ------------------------------- post signup ------------------------------ */
 const postSignIn = async (req, res) => {
     try {
+        console.log(req.body);
         let { email, password } = req.body
 
         let user = await User.findOne({ email: email })
         if (user) {
             const pass = await bcrypt.compare(password, user.password)
+            console.log(pass);
             if (pass) {
+
                 const token = jwt.sign({user: user.name}, "jwtSecret", {expiresIn: 300})
                 res.status(200).json({ msg: false, token: token, auth: true })
             } else {

@@ -1,18 +1,17 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 
-function Applicationlist() {
+function Approvedlist() {
     const navigate = useNavigate()
-    const [ApplicationList, setApplicationList] = useState([])
-    const [showModal, setShowModal] = useState(false)
-    const [apps, setapps] = useState(false)
+    const initial = { name: "", address: "", city: "", state: "", status: "", company: "" }
+    const [approvedList, setapprovedList] = useState([])
     const [modalData, setModalData] = useState({
         name: '', address: '', email: '',
         phone: '', company_name: '', Incubation: '',
         status: ''
     });
+    const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         userAuthenticeted()
     }, [navigate])
@@ -25,7 +24,7 @@ function Applicationlist() {
         }).then((response) => {
             console.log(response);
             if (response.data.auth) {
-                navigate('/admin/applicationlist')
+                navigate('/admin/approvedlist')
                 console.log(response.data.auth)
             } else { navigate('/adminlogin') }
         });
@@ -33,17 +32,14 @@ function Applicationlist() {
 
     useEffect(() => {
 
-        axios.get("http://localhost:5000/admin/home").then((response) => {
-            console.log(response.data)
-            if (response.data) {
-                setApplicationList(response.data)
-            }
-        })
-        return () => { setapps(false) }
-    }, [apps])
+        axios.get('http://localhost:5000/admin/approved').then((response) => {
 
+            setapprovedList(response.data)
+        })
+
+    }, [])
     const fullDetails = (id) => {
-        ApplicationList.filter((obj) => {
+        approvedList.filter((obj) => {
             console.log(obj);
             if (obj._id === id) {
                 setModalData({
@@ -55,95 +51,31 @@ function Applicationlist() {
             }
         })
     }
-    const approveForm = (id) => {
-        console.log(id);
-        Swal.fire({
-            title: 'Are you sure to Approve?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Approved!',
-                    'Your file has been Approved.',
-                    'success'
-                )
-                axios.post('http://localhost:5000/admin/approve/' + id).then((response) => {
-                    console.log(response)
-                    if (response.status === 200) {
-                        console.log("changed")
-                        alert("The slected Form has been approved successfully")
-                        setapps(true)
-                    } else {
-                        alert("Something went wrong")
-                    }
-                })
-            }
-        })
 
-    }
-    const rejectForm = (id) => {
-
-        Swal.fire({
-            title: 'Are you sure to Reject?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Rejected!',
-                    'Your file has been Rejected.',
-                    'success'
-                )
-
-                axios.post("http://localhost:5000/admin/reject/" + id).then((response) => {
-                    console.log(response)
-                    if (response.status === 200) {
-                        console.log("mattitund")
-                        alert("The selected Form has been rejected successfully")
-                        setapps(true)
-                    } else {
-                        alert("Something wnet wrong ")
-                    }
-                })
-            }
-        })
-
-
-    }
-
+   
+   
     return (
         <div>
-
             <section className="flex flex-col">
                 <div className="overflow-x-auto">
                     <div className="p-1.5 w-full inline-block align-middle">
                         <div className="overflow-hidden border rounded-lg">
-
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-sky-900">
                                     <tr>
                                         <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-white uppercase ">S/No</th>
-                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-white uppercase ">Name</th>
-                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-white uppercase ">Email</th>
+                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-white uppercase ">User</th>
+                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-left text-white uppercase ">User Id</th>
                                         <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-white uppercase ">COMPANY NAME</th>
-                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-white uppercase "></th>
+                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-white uppercase ">Status</th>
                                         <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-white uppercase ">ACTION</th>
-                                        <th scope="col" className="px-6 py-3 text-xs font-bold text-right text-white uppercase "></th>
+
                                     </tr>
                                 </thead>
 
                                 <tbody className="divide-y divide-gray-200">
                                     {
-                                        ApplicationList.map((obj, index) => {
+                                        approvedList.map((obj, index) => {
                                             return (
 
 
@@ -151,12 +83,14 @@ function Applicationlist() {
 
                                                     <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">{index + 1}</td>
                                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">{obj.name}</td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">{obj.email}</td>
+                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">{obj._id}</td>
                                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">{obj.company}</td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap"><button className="text-green-500 hover:text-green-700" onClick={() => { fullDetails(obj._id) }} >OPEN</button> </td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap"><button className="text-sky-500 hover:text-sky-700 pl-10 pr-10" onClick={() => { approveForm(obj._id) }} > APPROVE </button> </td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap"><button className="text-red-500 hover:text-red-700" onClick={() => { rejectForm(obj._id) }} > REJECT </button> </td>
+                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">{obj.status}</td>
+                                                    <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap"><button className="text-sky-500 hover:text-sky-700 pl-10 pr-10" onClick={()=>{fullDetails(obj._id)}} > open </button> </td>
 
+                                                    {/* { onClick={() => { fullDetails(obj._id) }}
+                                                    onClick={() => { approveForm(obj._id) }}
+                                                    onClick={() => { rejectForm(obj._id) }} } */}
                                                 </tr>
                                             )
                                         })
@@ -233,4 +167,4 @@ function Applicationlist() {
     )
 }
 
-export default Applicationlist
+export default Approvedlist

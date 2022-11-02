@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react'
-import {FaFirstdraft,FaAtlas,FaCubes,FaFileAlt,FaDatabase} from 'react-icons/fa'
+import {FaFirstdraft,FaAtlas,FaCubes,FaFileAlt,FaDatabase,FaMicrosoft} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 
@@ -9,10 +9,11 @@ function Navbar() {
     const [open, setOpen] = useState(true)
     const Menus = [
         { Applist: 'Application List', src: <FaAtlas/> },
-        { title: 'Approved List', src: <FaFirstdraft/> },
-        { title: 'Rejected List', src: <FaCubes/> },
-        { title: 'Booking Slots', src:  <FaDatabase/>  },
-        { title: 'Progress', src:  <FaFileAlt/>  },
+        { Approved: 'Approved List', src: <FaFirstdraft/> },
+        { Rejected: 'Rejected List', src: <FaCubes/> },
+        { Booking: 'Booking Slots', src:  <FaDatabase/>  },
+        { Create : 'Create Slots', src: <FaMicrosoft/> },
+        { Progress: 'Progress', src:  <FaFileAlt/>  },
     ]
     return (
         <div >
@@ -30,7 +31,11 @@ function Navbar() {
                             {menu.src}  
                             <span className={`${!open && 'hidden'} origin-left duration-200`}>{menu.title}
                             <Link to={'/admin/applicationlist'}>{menu.Applist}</Link>
-                            <Link></Link>
+                            <Link to={'/admin/approvedlist'}>{menu.Approved}</Link>
+                            <Link to={'/admin/rejectedlist'}>{menu.Rejected}</Link>
+                            <Link to={'/admin/bookingSlots'}>{menu.Booking}</Link>
+                            <Link to={'/admin/createSlot'}>{menu.Create}</Link>
+                            <Link to={'/admin/progress'}>{menu. Progress}</Link>
                             </span>
                         </li>
                     ))}

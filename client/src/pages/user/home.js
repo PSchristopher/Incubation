@@ -1,7 +1,9 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import jwtDecode from 'jwt-decode'
+
 
 
 
@@ -21,24 +23,35 @@ function Home() {
                 "x-access-token": localStorage.getItem("token"),
             },
         }).then((response) => {
-            if (response.data.auth){
-                console.log(jwtDecode(localStorage.getItem("token")));
-
+            if (response.data.auth) {
+                
                 setSomething(jwtDecode(localStorage.getItem("token")).user)
 
-                console.log(jwtDecode(localStorage.getItem("token")).user);
-               
-               
-                
-                console.log('loooooooooooooooooooo');
                 navigate('/')
             }
             else navigate('/login')
         });
     };
     const logout = () => {
-        localStorage.removeItem('token');
-        navigate("/login");
+
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            // showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            // denyButtonText: `Don't save`,
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                Swal.fire('LOGGED OUT!', 'C U AGAIN', 'success')
+                // } else if (result.isDenied) {
+                //   Swal.fire('Changes are not saved', '', 'info')
+                localStorage.removeItem('token');
+                navigate("/login");
+            }
+        })
+
+
     };
 
     const handleChange = (e) => {
@@ -48,7 +61,7 @@ function Home() {
     }
     // const fileUpload = (e) => {
     //     console.log(e.target.files[0].name)
-        
+
     //     setValues({
     //         ...values,
     //         image: e.target.files[0]
